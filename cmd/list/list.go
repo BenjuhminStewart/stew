@@ -17,7 +17,7 @@ var ListCmd = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		st := types.Stews{}
-		if err := st.Load(types.StewPath); err != nil {
+		if err := st.Load(types.GetHomeDir() + "/.stews.json"); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}

@@ -28,7 +28,7 @@ var EditCmd = &cobra.Command{
 
 		stews := types.Stews{}
 
-		err := stews.Load(types.StewPath)
+		err := stews.Load(types.GetHomeDir() + "/.stews.json")
 		if err != nil {
 			cmd.Println(err)
 			return
@@ -49,7 +49,7 @@ var EditCmd = &cobra.Command{
 					cmd.Println(err)
 					return
 				}
-				err = stews.Save(types.StewPath)
+				err = stews.Save(types.GetHomeDir() + "/.stews.json")
 				if err != nil {
 					cmd.Println(err)
 					return
@@ -66,7 +66,7 @@ var EditCmd = &cobra.Command{
 				cmd.Println(err)
 				return
 			}
-			err = stews.Save(types.StewPath)
+			err = stews.Save(types.GetHomeDir() + "/.stews.json")
 			if err != nil {
 				cmd.Println(err)
 				return

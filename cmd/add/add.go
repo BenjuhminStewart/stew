@@ -28,13 +28,13 @@ var AddCmd = &cobra.Command{
 
 		st := types.Stews{}
 
-		if err := st.Load(types.StewPath); err != nil {
+		if err := st.Load(types.GetHomeDir() + "/.stews.json"); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
 
 		st.Add(name, description, path, usesGit)
-		err := st.Save(types.StewPath)
+		err := st.Save(types.GetHomeDir() + "/.stews.json")
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

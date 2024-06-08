@@ -22,7 +22,7 @@ var GetCmd = &cobra.Command{
 		name, _ := cmd.Flags().GetString("name")
 
 		s := types.Stews{}
-		err := s.Load(types.StewPath)
+		err := s.Load(types.GetHomeDir() + "/.stews.json")
 		if err != nil {
 			fmt.Println(err)
 			return

@@ -10,7 +10,6 @@ import (
 )
 
 const (
-	StewPath  = "$HOME/.stews.json"
 	green     = "\033[32m"
 	red       = "\033[31m"
 	property  = "\033[36m"
@@ -26,6 +25,14 @@ type Stew struct {
 }
 
 type Stews []Stew
+
+func GetHomeDir() string {
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		panic(err)
+	}
+	return homeDir
+}
 
 func (st Stews) Len() int {
 	return len(st)
@@ -107,9 +114,9 @@ func (st Stews) Get(i int) (*Stew, error) {
 }
 
 func (st Stews) GetByName(name string) (*Stew, error) {
-	for _, t := range st {
+	for i, t := range st {
 		if t.Name == name {
-			return &t, nil
+			return st.Get(i)
 		}
 	}
 	err := fmt.Sprintf("\n%vstew with name `%s` not found%v", red, name, reset)
@@ -119,14 +126,17 @@ func (st Stews) GetByName(name string) (*Stew, error) {
 func (s *Stew) Edit(name, description, path string) error {
 
 	if name != "" {
+		fmt.Printf("\nName Changed: %s -> %v%s%v\n", s.Name, green, name, reset)
 		s.Name = name
 	}
 
 	if description != "" {
+		fmt.Printf("\nDescription Changed: %s -> %v%s%v\n", s.Description, green, description, reset)
 		s.Description = description
 	}
 
 	if path != "" {
+		fmt.Printf("\nPath Changed: %s -> %v%s%v\n", s.Path, green, path, reset)
 		s.Path = path
 	}
 

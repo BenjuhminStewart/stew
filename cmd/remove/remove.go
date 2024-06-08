@@ -15,7 +15,7 @@ var RemoveCmd = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		s := types.Stews{}
-		err := s.Load(types.StewPath)
+		err := s.Load(types.GetHomeDir() + "/.stews.json")
 		if err != nil {
 			cmd.Println(err)
 			return
@@ -50,7 +50,7 @@ var RemoveCmd = &cobra.Command{
 			}
 		}
 
-		err = s.Save(types.StewPath)
+		err = s.Save(types.GetHomeDir() + "/.stews.json")
 		if err != nil {
 			cmd.Println(err)
 			return
