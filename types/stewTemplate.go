@@ -22,7 +22,6 @@ type Stew struct {
 	Name        string
 	Description string
 	Path        string
-	UsesGit     bool
 	CreatedAt   time.Time
 }
 
@@ -36,7 +35,6 @@ func (st Stew) Print() {
 	fmt.Printf("\n%vName%v        -> %s\n", property, reset, st.Name)
 	fmt.Printf("%vDescription%v -> '%v%s%v'\n", property, reset, in_quotes, st.Description, reset)
 	fmt.Printf("%vPath%v        -> '%v%s%v'\n", property, reset, in_quotes, st.Path, reset)
-	fmt.Printf("%vUses Git?%v   -> %t\n", property, reset, st.UsesGit)
 	fmt.Printf("%vCreated At%v  -> %s\n\n", property, reset, formatTime(st.CreatedAt))
 }
 
@@ -45,7 +43,6 @@ func (st Stew) PrintAdded() {
 	fmt.Printf(" %vName%v        -> %s\n", property, reset, st.Name)
 	fmt.Printf(" %vDescription%v -> '%v%s%v'\n", property, reset, in_quotes, st.Description, reset)
 	fmt.Printf(" %vPath%v        -> '%v%s%v'\n", property, reset, in_quotes, st.Path, reset)
-	fmt.Printf(" %vUses Git?%v   -> %t\n", property, reset, st.UsesGit)
 	fmt.Printf(" %vCreated At%v  -> %s\n\n", property, reset, formatTime(st.CreatedAt))
 }
 
@@ -63,7 +60,6 @@ func (st *Stews) Add(name string, description string, path string, usesGit bool)
 		Name:        name,
 		Description: description,
 		Path:        path,
-		UsesGit:     usesGit,
 		CreatedAt:   time.Now(),
 	}
 	*st = append(*st, stew)
@@ -101,23 +97,40 @@ func (st *Stews) RemoveByName(name string) error {
 	return errors.New(err)
 }
 
-func (st Stews) Get(i int) (Stew, error) {
+func (st Stews) Get(i int) (*Stew, error) {
 	if i < 0 || i >= len(st) {
 		err := fmt.Sprintf("\n%vstew of index %d not found%v", red, i, reset)
-		return Stew{}, errors.New(err)
+		return &Stew{}, errors.New(err)
 	}
 
-	return st[i], nil
+	return &st[i], nil
 }
 
-func (st Stews) GetByName(name string) (Stew, error) {
+func (st Stews) GetByName(name string) (*Stew, error) {
 	for _, t := range st {
 		if t.Name == name {
-			return t, nil
+			return &t, nil
 		}
 	}
 	err := fmt.Sprintf("\n%vstew with name `%s` not found%v", red, name, reset)
-	return Stew{}, errors.New(err)
+	return &Stew{}, errors.New(err)
+}
+
+func (s *Stew) Edit(name, description, path string) error {
+
+	if name != "" {
+		s.Name = name
+	}
+
+	if description != "" {
+		s.Description = description
+	}
+
+	if path != "" {
+		s.Path = path
+	}
+
+	return nil
 }
 
 func formatTime(t time.Time) string {
@@ -134,10 +147,10 @@ func (st *Stews) List() {
 	}
 
 	table := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', tabwriter.Debug)
-	fmt.Fprintln(table, "ID\tName\tDescription\tPath\tUsesGit\tCreatedAt")
+	fmt.Fprintln(table, "ID\tName\tDescription\tPath\tCreatedAt")
 	fmt.Fprintln(table, "--\t----\t-----------\t----\t-------\t---------")
 	for i, s := range *st {
-		fmt.Fprintf(table, "%d\t%s\t'%s'\t%s\t%t\t%s\n", i, s.Name, s.Description, s.Path, s.UsesGit, formatTime(s.CreatedAt))
+		fmt.Fprintf(table, "%d\t%s\t'%s'\t%s\t%s\n", i, s.Name, s.Description, s.Path, formatTime(s.CreatedAt))
 
 	}
 
