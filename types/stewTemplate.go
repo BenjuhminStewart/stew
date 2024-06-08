@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	StewPath  = "~/.stews.json"
+	StewPath  = "$HOME/.stews.json"
 	green     = "\033[32m"
 	red       = "\033[31m"
 	property  = "\033[36m"
