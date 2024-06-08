@@ -107,14 +107,12 @@ func (st Stews) Get(i int) (Stew, error) {
 		return Stew{}, errors.New(err)
 	}
 
-	st[i].Print()
 	return st[i], nil
 }
 
 func (st Stews) GetByName(name string) (Stew, error) {
 	for _, t := range st {
 		if t.Name == name {
-			t.Print()
 			return t, nil
 		}
 	}
