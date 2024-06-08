@@ -4,6 +4,7 @@ Introducing `stew` 🍲🎉. A CLI for creating, storing, and using templates to
 
 ## usage
 - `stew add`: add a new stew template
+- `stew get`: get a stew given a certain id or name
 - `stew list`: list all stew templates
-- `stew use`: use a stew template
 - `stew remove`: remove a stew template
+- `stew use`: use a stew template
