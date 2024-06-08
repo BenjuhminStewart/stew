@@ -4,7 +4,10 @@ Copyright © 2024 Benjamin Stewart <benjuhminstewart@gmail.com
 package list
 
 import (
+	"fmt"
+	"github.com/BenjuhminStewart/stew/types"
 	"github.com/spf13/cobra"
+	"os"
 )
 
 // ListCmd represents the list command
@@ -13,7 +16,12 @@ var ListCmd = &cobra.Command{
 	Short: "List all created stews",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.Help()
+		st := types.Stews{}
+		if err := st.Load(types.StewPath); err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		st.List()
 	},
 }
 

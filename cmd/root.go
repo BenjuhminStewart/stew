@@ -11,6 +11,7 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/BenjuhminStewart/stew/cmd/add"
+	"github.com/BenjuhminStewart/stew/cmd/get"
 	"github.com/BenjuhminStewart/stew/cmd/list"
 	"github.com/BenjuhminStewart/stew/cmd/remove"
 	"github.com/BenjuhminStewart/stew/cmd/use"
@@ -42,6 +43,7 @@ func addSubCommands() {
 	rootCmd.AddCommand(list.ListCmd)
 	rootCmd.AddCommand(remove.RemoveCmd)
 	rootCmd.AddCommand(use.UseCmd)
+	rootCmd.AddCommand(get.GetCmd)
 }
 
 func init() {
