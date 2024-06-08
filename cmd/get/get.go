@@ -39,19 +39,23 @@ var GetCmd = &cobra.Command{
 		}
 
 		if id != -1 {
-			_, err := s.Get(id)
+			stew, err := s.Get(id)
 			if err != nil {
 				fmt.Println(err)
 				return
 			}
+
+			stew.Print()
 		}
 
 		if name != "" {
-			_, err := s.GetByName(name)
+			stew, err := s.GetByName(name)
 			if err != nil {
 				fmt.Println(err)
 				return
 			}
+
+			stew.Print()
 		}
 	},
 }
