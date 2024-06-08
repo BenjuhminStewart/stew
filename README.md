@@ -2,6 +2,11 @@
 
 Introducing `stew` 🍲🎉. A CLI for creating, storing, and using templates to reduce boilerplate.
 
+## Installation
+```
+go install github.com/BenjuhminStewart/stew@latest
+```
+
 ## usage
 - `stew add`: add a new stew template
 - `stew get`: get a stew given a certain id or name
