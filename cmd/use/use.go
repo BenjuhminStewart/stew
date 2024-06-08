@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 NAME HERE benjuhminstewart@gmail.com
+Copyright © 2024 Benjamin Stewart <benjuhminstewart@gmail.com
 */
 package use
 
