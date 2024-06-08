@@ -5,14 +5,11 @@ package use
 
 import (
 	"fmt"
+	"github.com/BenjuhminStewart/stew/types"
+	"github.com/spf13/cobra"
 	"io"
 	"os"
 	"path/filepath"
-	"strings"
-
-	"github.com/spf13/cobra"
-
-	"github.com/BenjuhminStewart/stew/types"
 )
 
 // UseCmd represents the init command
@@ -191,7 +188,6 @@ func CopyDir(src string, dst string) (err error) {
 func flags() {
 	UseCmd.Flags().StringP("name", "n", "", "The name of the project")
 	UseCmd.Flags().IntP("id", "i", -1, "The id of the stew")
-	UseCmd.Flags().StringP("path", "p", getCWD(), "The path to the stew")
 }
 
 func init() {
