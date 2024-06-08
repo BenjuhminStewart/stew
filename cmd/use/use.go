@@ -31,7 +31,6 @@ var UseCmd = &cobra.Command{
 
 		id, _ := cmd.Flags().GetInt("id")
 		name, _ := cmd.Flags().GetString("name")
-		path, _ := cmd.Flags().GetString("path")
 
 		if id == -1 && name == "" {
 			cmd.Help()
@@ -50,19 +49,12 @@ var UseCmd = &cobra.Command{
 				fmt.Println(err)
 				return
 			}
-			err = CopyDir(stew.Path, path)
+			err = CopyDir(stew.Path, getCWD())
 			if err != nil {
 				fmt.Println(err)
 				return
 			}
-
-			newFolderName := strings.Split(stew.Path, "/")[len(strings.Split(stew.Path, "/"))-1]
-
-			if checkIfDirExists(newFolderName) {
-				fmt.Println("🎉 Project created successfully")
-			} else {
-				fmt.Println("\n❌ Project not created")
-			}
+			fmt.Println("🎉 Project created successfully")
 
 		}
 
@@ -72,15 +64,9 @@ var UseCmd = &cobra.Command{
 				fmt.Println(err)
 				return
 			}
-			err = CopyDir(stew.Path, path)
+			err = CopyDir(stew.Path, getCWD())
 
-			newFolderName := strings.Split(stew.Path, "/")[len(strings.Split(stew.Path, "/"))-1]
-
-			if checkIfDirExists(newFolderName) {
-				fmt.Println("🎉 Project created successfully")
-			} else {
-				fmt.Println("\n❌ Project not created")
-			}
+			fmt.Println("🎉 Project created successfully")
 		}
 
 		if err != nil {
