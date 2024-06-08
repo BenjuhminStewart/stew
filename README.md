@@ -1,4 +1,6 @@
 # stew
+<img width="642" alt="image" src="https://github.com/BenjuhminStewart/stew/assets/82689821/94145b53-e0e2-4beb-b9ad-a34fae888875">
+
 CLI for creating, storing, and using templates to reduce boilerplate
 
 ## usage
