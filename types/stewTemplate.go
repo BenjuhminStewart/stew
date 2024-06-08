@@ -158,7 +158,7 @@ func (st *Stews) List() {
 
 	table := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', tabwriter.Debug)
 	fmt.Fprintln(table, "ID\tName\tDescription\tPath\tCreatedAt")
-	fmt.Fprintln(table, "--\t----\t-----------\t----\t-------\t---------")
+	fmt.Fprintln(table, "--\t----\t-----------\t----\t---------")
 	for i, s := range *st {
 		fmt.Fprintf(table, "%d\t%s\t'%s'\t%s\t%s\n", i, s.Name, s.Description, s.Path, formatTime(s.CreatedAt))
 
