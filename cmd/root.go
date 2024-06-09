@@ -16,6 +16,7 @@ import (
 	"github.com/BenjuhminStewart/stew/cmd/list"
 	"github.com/BenjuhminStewart/stew/cmd/remove"
 	"github.com/BenjuhminStewart/stew/cmd/use"
+	"github.com/BenjuhminStewart/stew/util"
 )
 
 var cfgFile string
@@ -39,6 +40,11 @@ func Execute() {
 	}
 }
 
+func setDefaults() {
+	viper.SetDefault("stewsPath", util.GetHomeDir()+"/.stews.json")
+	viper.SetDefault("timeFormat", "2006-01-02 15:04:05")
+}
+
 func addSubCommands() {
 	rootCmd.AddCommand(add.AddCmd)
 	rootCmd.AddCommand(edit.EditCmd)
@@ -55,7 +61,7 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.stew.yaml)")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.config/stew/config.yaml)")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
@@ -75,16 +81,20 @@ func initConfig() {
 		home, err := os.UserHomeDir()
 		cobra.CheckErr(err)
 
+		configPath := home + "/.config/stew"
+
 		// Search config in home directory with name ".stew" (without extension).
-		viper.AddConfigPath(home)
+		viper.AddConfigPath(configPath)
 		viper.SetConfigType("yaml")
-		viper.SetConfigName(".stew")
+		viper.SetConfigName("config")
+
+		setDefaults()
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
 
 	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
+	if err := viper.ReadInConfig(); err != nil {
+		fmt.Println(err)
 	}
 }

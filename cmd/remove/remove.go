@@ -6,6 +6,7 @@ package remove
 import (
 	"github.com/BenjuhminStewart/stew/types"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // RemoveCmd represents the delete command
@@ -15,7 +16,7 @@ var RemoveCmd = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		s := types.Stews{}
-		err := s.Load(types.GetHomeDir() + "/.stews.json")
+		err := s.Load(viper.GetString("stewsPath"))
 		if err != nil {
 			cmd.Println(err)
 			return
@@ -50,7 +51,7 @@ var RemoveCmd = &cobra.Command{
 			}
 		}
 
-		err = s.Save(types.GetHomeDir() + "/.stews.json")
+		err = s.Save(viper.GetString("stewsPath"))
 		if err != nil {
 			cmd.Println(err)
 			return

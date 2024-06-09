@@ -5,6 +5,7 @@ package edit
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 
 	"github.com/BenjuhminStewart/stew/types"
 )
@@ -28,7 +29,7 @@ var EditCmd = &cobra.Command{
 
 		stews := types.Stews{}
 
-		err := stews.Load(types.GetHomeDir() + "/.stews.json")
+		err := stews.Load(viper.GetString("stewsPath"))
 		if err != nil {
 			cmd.Println(err)
 			return
@@ -49,7 +50,7 @@ var EditCmd = &cobra.Command{
 					cmd.Println(err)
 					return
 				}
-				err = stews.Save(types.GetHomeDir() + "/.stews.json")
+				err = stews.Save(viper.GetString("stewsPath"))
 				if err != nil {
 					cmd.Println(err)
 					return
@@ -66,7 +67,7 @@ var EditCmd = &cobra.Command{
 				cmd.Println(err)
 				return
 			}
-			err = stews.Save(types.GetHomeDir() + "/.stews.json")
+			err = stews.Save(viper.GetString("stewsPath"))
 			if err != nil {
 				cmd.Println(err)
 				return
