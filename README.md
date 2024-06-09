@@ -14,7 +14,7 @@ go install github.com/BenjuhminStewart/stew@latest
 - `stew remove`: remove a stew template
 - `stew use`: use a stew template
 
-For more information on usage, checkout the DOC.md file.
+For more information on usage, checkout the [DOC.md](https://github.com/BenjuhminStewart/stew/blob/main/DOC.md) file.
 
 ## Configuration
 
