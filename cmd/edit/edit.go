@@ -12,12 +12,17 @@ import (
 
 // EditCmd represents the edit command
 var EditCmd = &cobra.Command{
-	Use:   "edit",
+	Use:   "edit <name_of_stew>",
 	Short: "Edit a stew's name, description, or path",
-	Long:  ``,
+	Long:  `stew edit <name_of_stew> [flags]`,
 	Run: func(cmd *cobra.Command, args []string) {
-		id, _ := cmd.Flags().GetInt("id")
-		selected_stew, _ := cmd.Flags().GetString("stew")
+
+		if len(args) == 0 {
+			cmd.Help()
+			return
+		}
+
+		selected_stew := args[0]
 		name, _ := cmd.Flags().GetString("name")
 		description, _ := cmd.Flags().GetString("description")
 		path, _ := cmd.Flags().GetString("path")
@@ -35,50 +40,26 @@ var EditCmd = &cobra.Command{
 			return
 		}
 
-		if id == -1 {
-			if selected_stew == "" {
-				cmd.Help()
-				return
-			} else {
-				stew, err := stews.GetByName(selected_stew)
-				if err != nil {
-					cmd.Println(err)
-					return
-				}
-				err = stew.Edit(name, description, path)
-				if err != nil {
-					cmd.Println(err)
-					return
-				}
-				err = stews.Save(viper.GetString("stewsPath"))
-				if err != nil {
-					cmd.Println(err)
-					return
-				}
-			}
-		} else {
-			s, err := stews.Get(id)
-			if err != nil {
-				cmd.Println(err)
-				return
-			}
-			err = s.Edit(name, description, path)
-			if err != nil {
-				cmd.Println(err)
-				return
-			}
-			err = stews.Save(viper.GetString("stewsPath"))
-			if err != nil {
-				cmd.Println(err)
-				return
-			}
+		stew, err := stews.GetByName(selected_stew)
+		if err != nil {
+			cmd.Println(err)
+			return
+		}
+
+		err = stew.Edit(name, description, path)
+		if err != nil {
+			cmd.Println(err)
+			return
+		}
+		err = stews.Save(viper.GetString("stewsPath"))
+		if err != nil {
+			cmd.Println(err)
+			return
 		}
 	},
 }
 
 func flags() {
-	EditCmd.Flags().IntP("id", "i", -1, "The id of the stew")
-	EditCmd.Flags().StringP("stew", "s", "", "The stew you want to edit")
 	EditCmd.Flags().StringP("name", "n", "", "The new name of the stew")
 	EditCmd.Flags().StringP("description", "d", "", "The new description of the stew")
 	EditCmd.Flags().StringP("path", "p", "", "The new path of the stew")

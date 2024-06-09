@@ -7,6 +7,7 @@ import (
 	"fmt"
 
 	"github.com/BenjuhminStewart/stew/types"
+	"github.com/BenjuhminStewart/stew/util"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
@@ -15,15 +16,16 @@ import (
 
 // AddCmd represents the create command
 var AddCmd = &cobra.Command{
-	Use:   "add",
+	Use:   "add <name_of_stew>",
 	Short: "Add a stew based off a defined directory",
-	Long:  ``,
+	Long:  `stew add <name_of_stew> [flags]`,
 	Run: func(cmd *cobra.Command, args []string) {
-		name, _ := cmd.Flags().GetString("name")
-		if name == "" {
+		if len(args) == 0 {
 			cmd.Help()
 			return
 		}
+
+		name := args[0]
 		description, _ := cmd.Flags().GetString("description")
 		path, _ := cmd.Flags().GetString("path")
 		usesGit, _ := cmd.Flags().GetBool("git")
@@ -33,6 +35,14 @@ var AddCmd = &cobra.Command{
 		if err := st.Load(viper.GetString("stewsPath")); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
+		}
+
+		// get absolute path
+		path, _ = util.GetPath(path)
+
+		// if description is empty, set it to no description provided
+		if description == "" {
+			description = "no description provided"
 		}
 
 		st.Add(name, description, path, usesGit)
@@ -50,14 +60,10 @@ func getCWD() string {
 }
 
 func addFlag() {
-	AddCmd.Flags().StringP("name", "n", "", "Name of the stew")
 	AddCmd.Flags().StringP("description", "d", "no description provided", "Description of the stew")
 	AddCmd.Flags().StringP("path", "p", getCWD(), "Path to the stew")
 	AddCmd.Flags().BoolP("git", "g", false, "If the stew uses git")
 
-	// required flags
-	AddCmd.MarkFlagRequired("name")
-	AddCmd.MarkFlagRequired("description")
 }
 
 func init() {

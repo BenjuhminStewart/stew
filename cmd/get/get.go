@@ -13,14 +13,17 @@ import (
 
 // GetCmd represents the get command
 var GetCmd = &cobra.Command{
-	Use:   "get",
+	Use:   "get <name_of_stew>",
 	Short: "Get a stew from a given name or id",
-	Long:  ``,
+	Long:  `stew get <name_of_stew> [flags]`,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		// check id flag
-		id, _ := cmd.Flags().GetInt("id")
-		name, _ := cmd.Flags().GetString("name")
+		if len(args) == 0 {
+			cmd.Help()
+			return
+		}
+
+		name := args[0]
 
 		s := types.Stews{}
 		err := s.Load(viper.GetString("stewsPath"))
@@ -29,41 +32,17 @@ var GetCmd = &cobra.Command{
 			return
 		}
 
-		if id == -1 && name == "" {
-			cmd.Help()
+		stew, err := s.GetByName(name)
+		if err != nil {
+			fmt.Println(err)
 			return
 		}
 
-		if id != -1 && name != "" {
-			fmt.Println("You can only use one flag at a time")
-			return
-		}
-
-		if id != -1 {
-			stew, err := s.Get(id)
-			if err != nil {
-				fmt.Println(err)
-				return
-			}
-
-			stew.Print()
-		}
-
-		if name != "" {
-			stew, err := s.GetByName(name)
-			if err != nil {
-				fmt.Println(err)
-				return
-			}
-
-			stew.Print()
-		}
+		stew.Print()
 	},
 }
 
 func flags() {
-	GetCmd.Flags().IntP("id", "i", -1, "The id of the stew")
-	GetCmd.Flags().StringP("name", "n", "", "The name of the stew")
 }
 
 func init() {

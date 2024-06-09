@@ -129,6 +129,11 @@ func (s *Stew) Edit(name, description, path string) error {
 	}
 
 	if path != "" {
+		path, err := util.GetPath(path)
+		if err != nil {
+			err := fmt.Sprintf("%v", err)
+			return errors.New(err)
+		}
 		fmt.Printf("\nPath Changed: %s -> %v%s%v\n", s.Path, green, path, reset)
 		s.Path = path
 	}

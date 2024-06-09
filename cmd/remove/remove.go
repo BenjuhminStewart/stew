@@ -11,9 +11,9 @@ import (
 
 // RemoveCmd represents the delete command
 var RemoveCmd = &cobra.Command{
-	Use:   "remove",
+	Use:   "remove <name_of_stew>",
 	Short: "Remove a stew",
-	Long:  ``,
+	Long:  `stew remove <name_of_stew> [flags]`,
 	Run: func(cmd *cobra.Command, args []string) {
 		s := types.Stews{}
 		err := s.Load(viper.GetString("stewsPath"))
@@ -22,33 +22,22 @@ var RemoveCmd = &cobra.Command{
 			return
 		}
 
-		id, _ := cmd.Flags().GetInt("id")
-		name, _ := cmd.Flags().GetString("name")
-
-		if id == -1 && name == "" {
+		if len(args) == 0 {
 			cmd.Help()
 			return
 		}
 
-		if id != -1 && name != "" {
-			cmd.Println("Either search by id OR name, not both")
+		name := args[0]
+		_, err = s.GetByName(name)
+		if err != nil {
+			cmd.Println(err)
 			return
 		}
 
-		if id != -1 {
-			err := s.Remove(id)
-			if err != nil {
-				cmd.Println(err)
-				return
-			}
-		}
-
-		if name != "" {
-			err := s.RemoveByName(name)
-			if err != nil {
-				cmd.Println(err)
-				return
-			}
+		err = s.RemoveByName(name)
+		if err != nil {
+			cmd.Println(err)
+			return
 		}
 
 		err = s.Save(viper.GetString("stewsPath"))
