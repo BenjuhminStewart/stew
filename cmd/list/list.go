@@ -5,9 +5,11 @@ package list
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/BenjuhminStewart/stew/types"
 	"github.com/spf13/cobra"
-	"os"
+	"github.com/spf13/viper"
 )
 
 // ListCmd represents the list command
@@ -17,7 +19,7 @@ var ListCmd = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		st := types.Stews{}
-		if err := st.Load(types.GetHomeDir() + "/.stews.json"); err != nil {
+		if err := st.Load(viper.GetString("stewsPath")); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}

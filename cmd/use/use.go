@@ -5,11 +5,13 @@ package use
 
 import (
 	"fmt"
-	"github.com/BenjuhminStewart/stew/types"
-	"github.com/spf13/cobra"
 	"io"
 	"os"
 	"path/filepath"
+
+	"github.com/BenjuhminStewart/stew/types"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // UseCmd represents the init command
@@ -19,7 +21,7 @@ var UseCmd = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		s := types.Stews{}
-		err := s.Load(types.GetHomeDir() + "/.stews.json")
+		err := s.Load(viper.GetString("stewsPath"))
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

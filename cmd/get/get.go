@@ -8,6 +8,7 @@ import (
 
 	"github.com/BenjuhminStewart/stew/types"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // GetCmd represents the get command
@@ -22,7 +23,7 @@ var GetCmd = &cobra.Command{
 		name, _ := cmd.Flags().GetString("name")
 
 		s := types.Stews{}
-		err := s.Load(types.GetHomeDir() + "/.stews.json")
+		err := s.Load(viper.GetString("stewsPath"))
 		if err != nil {
 			fmt.Println(err)
 			return

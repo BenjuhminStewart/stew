@@ -4,17 +4,18 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/BenjuhminStewart/stew/util"
 	"os"
-	"text/tabwriter"
 	"time"
 )
 
 const (
-	green     = "\033[32m"
-	red       = "\033[31m"
-	property  = "\033[36m"
-	in_quotes = "\033[35m"
-	reset     = "\033[0m"
+	green       = "\033[32m"
+	red         = "\033[31m"
+	property    = "\033[36m"
+	description = "\033[35m"
+	path        = "\033[33m"
+	reset       = "\033[0m"
 )
 
 type Stew struct {
@@ -26,35 +27,27 @@ type Stew struct {
 
 type Stews []Stew
 
-func GetHomeDir() string {
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		panic(err)
-	}
-	return homeDir
-}
-
 func (st Stews) Len() int {
 	return len(st)
 }
 
 func (st Stew) Print() {
 	fmt.Printf("\n%vName%v        -> %s\n", property, reset, st.Name)
-	fmt.Printf("%vDescription%v -> '%v%s%v'\n", property, reset, in_quotes, st.Description, reset)
-	fmt.Printf("%vPath%v        -> '%v%s%v'\n", property, reset, in_quotes, st.Path, reset)
-	fmt.Printf("%vCreated At%v  -> %s\n\n", property, reset, formatTime(st.CreatedAt))
+	fmt.Printf("%vDescription%v -> '%v%s%v'\n", property, reset, description, st.Description, reset)
+	fmt.Printf("%vPath%v        -> '%v%s%v'\n", property, reset, path, st.Path, reset)
+	fmt.Printf("%vCreated At%v  -> %s\n\n", property, reset, util.FormatTime(st.CreatedAt))
 }
 
 func (st Stew) PrintAdded() {
 	fmt.Printf("\n`%v%s%v` has been added to your stews 🎉\n\n", green, st.Name, reset)
 	fmt.Printf(" %vName%v        -> %s\n", property, reset, st.Name)
-	fmt.Printf(" %vDescription%v -> '%v%s%v'\n", property, reset, in_quotes, st.Description, reset)
-	fmt.Printf(" %vPath%v        -> '%v%s%v'\n", property, reset, in_quotes, st.Path, reset)
-	fmt.Printf(" %vCreated At%v  -> %s\n\n", property, reset, formatTime(st.CreatedAt))
+	fmt.Printf(" %vDescription%v -> '%v%s%v'\n", property, reset, description, st.Description, reset)
+	fmt.Printf(" %vPath%v        -> '%v%s%v'\n", property, reset, path, st.Path, reset)
+	fmt.Printf(" %vCreated At%v  -> %s\n\n", property, reset, util.FormatTime(st.CreatedAt))
 }
 
 func (st Stew) PrintRemoved() {
-	fmt.Printf("\n`%v%s%v` has been removed from your stews 👋\n\n", red, st.Name, reset)
+	fmt.Printf("\n`%v%s%v` has been removed from your stews 👋\n", red, st.Name, reset)
 }
 
 func (st *Stews) Add(name string, description string, path string, usesGit bool) {
@@ -143,28 +136,22 @@ func (s *Stew) Edit(name, description, path string) error {
 	return nil
 }
 
-func formatTime(t time.Time) string {
-	// format yyyy-mm-dd hh:mm:ss
-	return t.Format("2006-01-02 15:04:05")
-
-}
-
 func (st *Stews) List() {
-	// create a table of the stews aligned in columns of ID, Name, Description, UsesGit, CreatedAt
+	// create a table of the stews aligned in columns of ID, Name, Description, CreatedAt
 	if len(*st) == 0 {
 		fmt.Println("\nNo stews found")
 		return
 	}
 
-	table := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', tabwriter.Debug)
-	fmt.Fprintln(table, "ID\tName\tDescription\tPath\tCreatedAt")
-	fmt.Fprintln(table, "--\t----\t-----------\t----\t---------")
+	fmt.Printf("\n%v%v%v\n", property, "Stews:", reset)
 	for i, s := range *st {
-		fmt.Fprintf(table, "%d\t%s\t'%s'\t%s\t%s\n", i, s.Name, s.Description, s.Path, formatTime(s.CreatedAt))
-
+		fmt.Println()
+		fmt.Printf(" %v%v%v [%v%v%v]", green, s.Name, reset, property, i, reset)
+		fmt.Printf(": '%v%s%v'\n", description, s.Description, reset)
+		fmt.Printf(" %v%s%v\n", path, s.Path, reset)
+		fmt.Printf(" %s\n", util.FormatTime(s.CreatedAt))
 	}
 
-	table.Flush()
 }
 
 func (st *Stews) Load(path string) error {

@@ -5,8 +5,10 @@ package add
 
 import (
 	"fmt"
+
 	"github.com/BenjuhminStewart/stew/types"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 
 	"os"
 )
@@ -28,13 +30,13 @@ var AddCmd = &cobra.Command{
 
 		st := types.Stews{}
 
-		if err := st.Load(types.GetHomeDir() + "/.stews.json"); err != nil {
+		if err := st.Load(viper.GetString("stewsPath")); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
 
 		st.Add(name, description, path, usesGit)
-		err := st.Save(types.GetHomeDir() + "/.stews.json")
+		err := st.Save(viper.GetString("stewsPath"))
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
