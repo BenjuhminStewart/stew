@@ -37,7 +37,11 @@ var AddCmd = &cobra.Command{
 		}
 
 		// get absolute path
-		path, _ = util.GetPath(path)
+		path, err := util.GetPath(path)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 
 		// if description is empty, set it to no description provided
 		if description == "" {
@@ -45,7 +49,7 @@ var AddCmd = &cobra.Command{
 		}
 
 		st.Add(name, description, path)
-		err := st.Save(viper.GetString("stewsPath"))
+		err = st.Save(viper.GetString("stewsPath"))
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
