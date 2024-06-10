@@ -43,6 +43,7 @@ func Execute() {
 func setDefaults() {
 	viper.SetDefault("stewsPath", util.GetHomeDir()+"/.stews.json")
 	viper.SetDefault("timeFormat", "2006-01-02 15:04:05")
+	viper.SetDefault("allowFileCreation", false)
 }
 
 func addSubCommands() {

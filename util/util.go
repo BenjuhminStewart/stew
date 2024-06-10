@@ -14,7 +14,8 @@ import (
 )
 
 const (
-	red = "\033[31m"
+	red   = "\033[31m"
+	reset = "\033[0m"
 )
 
 func GetHomeDir() string {
@@ -55,8 +56,8 @@ func GetPath(path string) (string, error) {
 	}
 
 	if !checkIfDirExists(path) {
-		err := fmt.Sprintf("\n%v%v does not exist", red, path)
-		return err, errors.New(err)
+		err := fmt.Sprintf("\n%v%v%v does not exist", red, path, reset)
+		return path, errors.New(err)
 	}
 
 	return path, nil

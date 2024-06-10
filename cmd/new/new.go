@@ -30,6 +30,7 @@ var NewCmd = &cobra.Command{
 
 		name := args[0]
 		path, _ := cmd.Flags().GetString("path")
+		force, _ := cmd.Flags().GetBool("force")
 
 		// get Stew by name
 		stew, err := s.GetByName(name)
@@ -42,8 +43,11 @@ var NewCmd = &cobra.Command{
 			path = util.GetCurrentDir()
 		} else {
 			path, err = util.GetPath(path)
-			if err != nil {
+
+			if err != nil && !viper.GetBool("allowFileCreation") && !force {
 				fmt.Println(err)
+				fmt.Println("To overwrite this, run the command with the -f or --force flag")
+				fmt.Println("If you want to overwrite this by default, set allowFileCreation to true in your config file")
 				return
 			}
 		}
@@ -60,6 +64,7 @@ var NewCmd = &cobra.Command{
 
 func flags() {
 	NewCmd.Flags().StringP("path", "p", "", "The path to the stew (defaults to current directory)")
+	NewCmd.Flags().BoolP("force", "f", false, "Force the creation of the project")
 }
 
 func init() {

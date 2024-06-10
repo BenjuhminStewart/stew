@@ -70,7 +70,8 @@ stew new <name_of_stew> [flags]
 
 Flags:
   -h, --help          help for new
--p, --path string   The path to the stew (defaults to current directory)
+  -p, --path string   The path to the stew (defaults to current directory)
+  -f, --force         Force the creation of a new stew even if the stew already exists
 
   Global Flags:
 --config string   config file (default is $HOME/.config/stew/config.yaml)
