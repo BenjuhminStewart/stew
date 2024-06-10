@@ -41,7 +41,11 @@ var UseCmd = &cobra.Command{
 		if path == "" {
 			path = util.GetCurrentDir()
 		} else {
-			path, _ = util.GetPath(path)
+			path, err = util.GetPath(path)
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
 		}
 
 		err = util.CopyDir(stew.Path, path)
