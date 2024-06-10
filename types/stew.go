@@ -82,8 +82,8 @@ func (st *Stews) Remove(i int) error {
 		return errors.New("invalid index")
 	}
 
-	*st = append(ls[:i], ls[i+1:]...)
 	ls[i].PrintRemoved()
+	*st = append(ls[:i], ls[i+1:]...)
 	return nil
 }
 
