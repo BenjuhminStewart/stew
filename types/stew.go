@@ -50,7 +50,7 @@ func (st Stew) PrintRemoved() {
 	fmt.Printf("\n`%v%s%v` has been removed from your stews 👋\n", red, st.Name, reset)
 }
 
-func (st *Stews) Add(name string, description string, path string, usesGit bool) {
+func (st *Stews) Add(name string, description string, path string) {
 	if st.doesStewExist(path) {
 		fmt.Printf("\n`%v%s%v` already exists in your stews\n", red, name, reset)
 		return

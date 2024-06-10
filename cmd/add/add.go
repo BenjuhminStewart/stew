@@ -28,7 +28,6 @@ var AddCmd = &cobra.Command{
 		name := args[0]
 		description, _ := cmd.Flags().GetString("description")
 		path, _ := cmd.Flags().GetString("path")
-		usesGit, _ := cmd.Flags().GetBool("git")
 
 		st := types.Stews{}
 
@@ -45,7 +44,7 @@ var AddCmd = &cobra.Command{
 			description = "no description provided"
 		}
 
-		st.Add(name, description, path, usesGit)
+		st.Add(name, description, path)
 		err := st.Save(viper.GetString("stewsPath"))
 		if err != nil {
 			fmt.Println(err)
@@ -62,7 +61,6 @@ func getCWD() string {
 func addFlag() {
 	AddCmd.Flags().StringP("description", "d", "no description provided", "Description of the stew")
 	AddCmd.Flags().StringP("path", "p", getCWD(), "Path to the stew")
-	AddCmd.Flags().BoolP("git", "g", false, "If the stew uses git")
 
 }
 

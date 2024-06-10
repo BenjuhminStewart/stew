@@ -9,7 +9,6 @@ stew add <name_of_stew> [flags]
 
 Flags:
 -d, --description string   Description of the stew (default "no description provided")
--g, --git                  If the stew uses git
 -h, --help                 help for add
 -p, --path string          Path to the stew (defaults to current directory)
 ```
@@ -62,6 +61,21 @@ Global Flags:
   --config string   config file (default is $HOME/.config/stew/config.yaml)
 ```
 
+### new
+```
+Create a new instance of a stew from a given name
+
+Usage:
+stew new <name_of_stew> [flags]
+
+Flags:
+  -h, --help          help for new
+-p, --path string   The path to the stew (defaults to current directory)
+
+  Global Flags:
+--config string   config file (default is $HOME/.config/stew/config.yaml)
+```
+
 ## remove
 ```
 Remove a stew
@@ -71,21 +85,6 @@ Usage:
 
 Flags:
   -h, --help          help for remove
-
-Global Flags:
-  --config string   config file (default is $HOME/.config/stew/config.yaml)
-```
-
-### use
-```
-Use a stew from a given name
-
-Usage:
-  stew use <name_of_stew> [flags]
-
-Flags:
-  -h, --help          help for use
-  -p, --path string   The path to the stew (defaults to current directory)
 
 Global Flags:
   --config string   config file (default is $HOME/.config/stew/config.yaml)
