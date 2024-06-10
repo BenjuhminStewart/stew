@@ -1,7 +1,7 @@
 /*
 Copyright © 2024 Benjamin Stewart <benjuhminstewart@gmail.com
 */
-package use
+package new
 
 import (
 	"fmt"
@@ -11,11 +11,11 @@ import (
 	"github.com/spf13/viper"
 )
 
-// UseCmd represents the init command
-var UseCmd = &cobra.Command{
-	Use:   "use <name_of_stew>",
-	Short: "Use a stew instance to create a new project",
-	Long:  `stew use <name_of_stew> [flags]`,
+// NewCmd represents the init command
+var NewCmd = &cobra.Command{
+	Use:   "new <name_of_stew>",
+	Short: "Create a new instance of a stew template to create a new project",
+	Long:  `stew new <name_of_stew> [flags]`,
 	Run: func(cmd *cobra.Command, args []string) {
 		s := types.Stews{}
 		err := s.Load(viper.GetString("stewsPath"))
@@ -59,7 +59,7 @@ var UseCmd = &cobra.Command{
 }
 
 func flags() {
-	UseCmd.Flags().StringP("path", "p", "", "The path to the stew (defaults to current directory)")
+	NewCmd.Flags().StringP("path", "p", "", "The path to the stew (defaults to current directory)")
 }
 
 func init() {
