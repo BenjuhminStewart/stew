@@ -1,9 +1,11 @@
 package util
 
 import (
+	"bufio"
 	"errors"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"time"
 
@@ -14,8 +16,11 @@ import (
 )
 
 const (
-	red   = "\033[31m"
-	reset = "\033[0m"
+	red        = "\033[31m"
+	path_color = "\033[33m"
+	green      = "\033[32m"
+	quoted     = "\033[35m"
+	reset      = "\033[0m"
 )
 
 func GetHomeDir() string {
@@ -170,4 +175,77 @@ func CopyDir(src string, dst string) (err error) {
 	}
 
 	return
+}
+
+func UpdateProjectName(path string, old_string string, new_string string, ignoreCase bool) (int, error) {
+	// file walker that goes through all files in the directory and replaces the replaceString with the projectName
+
+	var filesChanged []string
+	count := 0
+	filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if info.IsDir() {
+			return nil
+		}
+		file, err := os.OpenFile(path, os.O_RDWR, 0644)
+		if err != nil {
+			return err
+		}
+		defer file.Close()
+		scanner := bufio.NewScanner(file)
+		read, err := os.ReadFile(path)
+		if err != nil {
+			panic(err)
+		}
+		for scanner.Scan() {
+			line := scanner.Text()
+			if ignoreCase {
+				if caseInsensitiveContains(line, old_string) {
+					regex_string := fmt.Sprintf("(?i)%v", old_string)
+					re := regexp.MustCompile(regex_string)
+					newContents := re.ReplaceAllString(string(read), new_string)
+					err = os.WriteFile(path, []byte(newContents), 0644)
+					if err != nil {
+						return err
+					}
+					filesChanged = append(filesChanged, path)
+					count++
+				}
+			} else {
+				if strings.Contains(line, old_string) {
+					newContents := strings.Replace(string(read), old_string, new_string, -1)
+					err = os.WriteFile(path, []byte(newContents), 0644)
+					if err != nil {
+						return err
+					}
+
+					filesChanged = append(filesChanged, path)
+					count++
+				}
+			}
+		}
+		err = file.Sync()
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+	if len(filesChanged) != 0 {
+		fmt.Printf("\nReplaced in:\n%v", filesReplacedString(filesChanged))
+	}
+	return count, nil
+}
+
+func caseInsensitiveContains(a, b string) bool {
+	return strings.Contains(strings.ToLower(a), strings.ToLower(b))
+}
+
+func filesReplacedString(filesChanged []string) string {
+	var str string
+	for _, file := range filesChanged {
+		str += fmt.Sprintf(" - %v%v%v\n", quoted, file, reset)
+	}
+	return str
 }

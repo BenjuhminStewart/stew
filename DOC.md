@@ -90,3 +90,19 @@ Flags:
 Global Flags:
   --config string   config file (default is $HOME/.config/stew/config.yaml)
 ```
+
+## replace
+```
+Replace a string in a project
+
+Usage:
+stew replace <old_string> <new_string> [flags]
+
+Flags:
+  -h, --help          help for replace
+  -p, --path string   The path to the stew (defaults to current directory)
+  -i, --ignore-case   Ignore case when searching for the old string
+
+  Global Flags:
+--config string   config file (default is $HOME/.config/stew/config.yaml)
+```
