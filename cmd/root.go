@@ -21,6 +21,7 @@ import (
 )
 
 var cfgFile string
+var version string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -29,7 +30,15 @@ var rootCmd = &cobra.Command{
 	Long:  ``,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
+	Run: func(cmd *cobra.Command, args []string) {
+		flag, _ := cmd.Flags().GetBool("version")
+		if flag {
+			fmt.Println(version)
+			os.Exit(0)
+		}
+
+		cmd.Help()
+	},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -45,6 +54,8 @@ func setDefaults() {
 	viper.SetDefault("stewsPath", util.GetHomeDir()+"/.stews.json")
 	viper.SetDefault("timeFormat", "2006-01-02 15:04:05")
 	viper.SetDefault("allowFileCreation", false)
+
+	version = "v1.2.1"
 }
 
 func addSubCommands() {
@@ -56,6 +67,11 @@ func addSubCommands() {
 	rootCmd.AddCommand(get.GetCmd)
 	rootCmd.AddCommand(replace.ReplaceCmd)
 
+}
+
+func flags() {
+	// -v, --version flag to print the version
+	rootCmd.PersistentFlags().BoolP("version", "v", false, "Print the version")
 }
 
 func init() {
@@ -73,6 +89,8 @@ func init() {
 
 	// add sub commands
 	addSubCommands()
+
+	flags()
 }
 
 // initConfig reads in config file and ENV variables if set.
