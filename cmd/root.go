@@ -55,7 +55,7 @@ func setDefaults() {
 	viper.SetDefault("timeFormat", "2006-01-02 15:04:05")
 	viper.SetDefault("allowFileCreation", false)
 
-	version = "v1.2.1"
+	version = "v1.2.2"
 }
 
 func addSubCommands() {
