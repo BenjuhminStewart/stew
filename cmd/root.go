@@ -16,6 +16,7 @@ import (
 	"github.com/BenjuhminStewart/stew/cmd/list"
 	"github.com/BenjuhminStewart/stew/cmd/new"
 	"github.com/BenjuhminStewart/stew/cmd/remove"
+	"github.com/BenjuhminStewart/stew/cmd/replace"
 	"github.com/BenjuhminStewart/stew/util"
 )
 
@@ -53,6 +54,8 @@ func addSubCommands() {
 	rootCmd.AddCommand(remove.RemoveCmd)
 	rootCmd.AddCommand(new.NewCmd)
 	rootCmd.AddCommand(get.GetCmd)
+	rootCmd.AddCommand(replace.ReplaceCmd)
+
 }
 
 func init() {
