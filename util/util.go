@@ -16,13 +16,14 @@ import (
 )
 
 const (
-	red        = "\033[31m"
-	path_color = "\033[33m"
-	green      = "\033[32m"
-	quoted     = "\033[35m"
-	reset      = "\033[0m"
+	red       = "\033[31m"
+	pathColor = "\033[33m"
+	green     = "\033[32m"
+	quoted    = "\033[35m"
+	reset     = "\033[0m"
 )
 
+// GetHomeDir returns the home directory
 func GetHomeDir() string {
 
 	homeDir, err := os.UserHomeDir()
@@ -33,17 +34,20 @@ func GetHomeDir() string {
 
 }
 
+// GetCurrentDir returns the current directory
 func GetCurrentDir() string {
 	cwd, _ := os.Getwd()
 	return cwd
 }
 
+// FormatTime formats a time
 func FormatTime(t time.Time) string {
 	// format yyyy-mm-dd hh:mm:ss
 	return t.Format(viper.GetString("timeFormat"))
 
 }
 
+// GetPath returns the path to a file
 func GetPath(path string) (string, error) {
 	dirs := strings.Split(path, "/")
 	homeDir := GetCurrentDir()
@@ -53,11 +57,11 @@ func GetPath(path string) (string, error) {
 
 	if isPathAbsolute {
 		return path, nil
-	} else {
-		path = homeDir
-		for _, val := range dirs {
-			path = filepath.Join(path, val)
-		}
+	}
+
+	path = homeDir
+	for _, val := range dirs {
+		path = filepath.Join(path, val)
 	}
 
 	if !checkIfDirExists(path) {
@@ -68,6 +72,7 @@ func GetPath(path string) (string, error) {
 	return path, nil
 }
 
+// checkIfDirExists checks if a directory exists
 func checkIfDirExists(path string) bool {
 	_, err := os.Stat(path)
 	if err == nil {
@@ -79,11 +84,13 @@ func checkIfDirExists(path string) bool {
 	return false
 }
 
+// getCWD returns the current working directory
 func getCWD() string {
 	cwd, _ := os.Getwd()
 	return cwd
 }
 
+// CopyFile copies a file from one location to another
 func CopyFile(src, dst string) (err error) {
 	in, err := os.Open(src)
 	if err != nil {
@@ -177,7 +184,8 @@ func CopyDir(src string, dst string) (err error) {
 	return
 }
 
-func UpdateProjectName(path string, old_string string, new_string string, ignoreCase bool) (int, error) {
+// UpdateProjectName updates a project name in a file
+func UpdateProjectName(path string, oldString string, newString string, ignoreCase bool) (int, error) {
 	// file walker that goes through all files in the directory and replaces the replaceString with the projectName
 
 	var filesChanged []string
@@ -202,10 +210,10 @@ func UpdateProjectName(path string, old_string string, new_string string, ignore
 		for scanner.Scan() {
 			line := scanner.Text()
 			if ignoreCase {
-				if caseInsensitiveContains(line, old_string) {
-					regex_string := fmt.Sprintf("(?i)%v", old_string)
-					re := regexp.MustCompile(regex_string)
-					newContents := re.ReplaceAllString(string(read), new_string)
+				if caseInsensitiveContains(line, oldString) {
+					regexString := fmt.Sprintf("(?i)%v", oldString)
+					re := regexp.MustCompile(regexString)
+					newContents := re.ReplaceAllString(string(read), newString)
 					err = os.WriteFile(path, []byte(newContents), 0644)
 					if err != nil {
 						return err
@@ -214,8 +222,8 @@ func UpdateProjectName(path string, old_string string, new_string string, ignore
 					count++
 				}
 			} else {
-				if strings.Contains(line, old_string) {
-					newContents := strings.Replace(string(read), old_string, new_string, -1)
+				if strings.Contains(line, oldString) {
+					newContents := strings.Replace(string(read), oldString, newString, -1)
 					err = os.WriteFile(path, []byte(newContents), 0644)
 					if err != nil {
 						return err

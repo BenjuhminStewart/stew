@@ -18,6 +18,7 @@ const (
 	reset       = "\033[0m"
 )
 
+// Stew is a struct that represents a stew
 type Stew struct {
 	Name        string
 	Description string
@@ -25,12 +26,15 @@ type Stew struct {
 	CreatedAt   time.Time
 }
 
+// Stews is a slice of Stew structs
 type Stews []Stew
 
+// Len returns the length of the slice
 func (st Stews) Len() int {
 	return len(st)
 }
 
+// Print prints the stew
 func (st Stew) Print() {
 	fmt.Printf("\n%vName%v        -> %s\n", property, reset, st.Name)
 	fmt.Printf("%vDescription%v -> '%v%s%v'\n", property, reset, description, st.Description, reset)
@@ -38,6 +42,7 @@ func (st Stew) Print() {
 	fmt.Printf("%vCreated At%v  -> %s\n\n", property, reset, util.FormatTime(st.CreatedAt))
 }
 
+// PrintAdded prints the stew with the added properties
 func (st Stew) PrintAdded() {
 	fmt.Printf("\n`%v%s%v` has been added to your stews 🎉\n\n", green, st.Name, reset)
 	fmt.Printf(" %vName%v        -> %s\n", property, reset, st.Name)
@@ -46,10 +51,12 @@ func (st Stew) PrintAdded() {
 	fmt.Printf(" %vCreated At%v  -> %s\n\n", property, reset, util.FormatTime(st.CreatedAt))
 }
 
+// PrintRemoved prints the stew with the removed properties
 func (st Stew) PrintRemoved() {
 	fmt.Printf("\n`%v%s%v` has been removed from your stews 👋\n", red, st.Name, reset)
 }
 
+// Add adds a stew to the slice
 func (st *Stews) Add(name string, description string, path string) {
 	if st.doesStewExist(path) {
 		fmt.Printf("\n`%v%s%v` already exists in your stews\n", red, name, reset)
@@ -67,6 +74,7 @@ func (st *Stews) Add(name string, description string, path string) {
 	stew.PrintAdded()
 }
 
+// doesStewExist checks if a stew already exists in the slice
 func (st *Stews) doesStewExist(path string) bool {
 	for _, s := range *st {
 		if s.Path == path {
@@ -76,6 +84,7 @@ func (st *Stews) doesStewExist(path string) bool {
 	return false
 }
 
+// Remove removes a stew from the slice
 func (st *Stews) Remove(i int) error {
 	ls := *st
 	if i < 0 || i >= len(ls) {
@@ -87,6 +96,7 @@ func (st *Stews) Remove(i int) error {
 	return nil
 }
 
+// RemoveByName removes a stew from the slice by name
 func (st *Stews) RemoveByName(name string) error {
 	for i, s := range *st {
 		if s.Name == name {
@@ -97,6 +107,7 @@ func (st *Stews) RemoveByName(name string) error {
 	return errors.New(err)
 }
 
+// Get returns a stew from the slice by name
 func (st Stews) Get(i int) (*Stew, error) {
 	if i < 0 || i >= len(st) {
 		err := fmt.Sprintf("\n%vstew of index %d not found%v", red, i, reset)
@@ -106,6 +117,7 @@ func (st Stews) Get(i int) (*Stew, error) {
 	return &st[i], nil
 }
 
+// GetByName returns a stew from the slice by name
 func (st Stews) GetByName(name string) (*Stew, error) {
 	for i, t := range st {
 		if t.Name == name {
@@ -116,16 +128,17 @@ func (st Stews) GetByName(name string) (*Stew, error) {
 	return &Stew{}, errors.New(err)
 }
 
-func (s *Stew) Edit(name, description, path string) error {
+// Edit edits a stew's name, description, or path
+func (st *Stew) Edit(name, description, path string) error {
 
 	if name != "" {
-		fmt.Printf("\nName Changed: %s -> %v%s%v\n", s.Name, green, name, reset)
-		s.Name = name
+		fmt.Printf("\nName Changed: %s -> %v%s%v\n", st.Name, green, name, reset)
+		st.Name = name
 	}
 
 	if description != "" {
-		fmt.Printf("\nDescription Changed: %s -> %v%s%v\n", s.Description, green, description, reset)
-		s.Description = description
+		fmt.Printf("\nDescription Changed: %s -> %v%s%v\n", st.Description, green, description, reset)
+		st.Description = description
 	}
 
 	if path != "" {
@@ -134,13 +147,14 @@ func (s *Stew) Edit(name, description, path string) error {
 			err := fmt.Sprintf("%v", err)
 			return errors.New(err)
 		}
-		fmt.Printf("\nPath Changed: %s -> %v%s%v\n", s.Path, green, path, reset)
-		s.Path = path
+		fmt.Printf("\nPath Changed: %s -> %v%s%v\n", st.Path, green, path, reset)
+		st.Path = path
 	}
 
 	return nil
 }
 
+// List prints the stews
 func (st *Stews) List() {
 	// create a table of the stews aligned in columns of ID, Name, Description, CreatedAt
 	if len(*st) == 0 {
@@ -159,6 +173,7 @@ func (st *Stews) List() {
 
 }
 
+// Load loads stews from a file
 func (st *Stews) Load(path string) error {
 	file, err := os.ReadFile(path)
 	if err != nil {
@@ -181,6 +196,7 @@ func (st *Stews) Load(path string) error {
 
 }
 
+// Save saves stews to a file
 func (st *Stews) Save(path string) error {
 	file, err := json.Marshal(st)
 	if err != nil {

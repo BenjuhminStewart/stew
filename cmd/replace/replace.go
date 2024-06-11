@@ -1,6 +1,3 @@
-/*
-Copyright © 2024 Benjamin Stewart <benjuhminstewart@gmail.com
-*/
 package replace
 
 import (
@@ -11,11 +8,11 @@ import (
 )
 
 const (
-	green      = "\033[32m"
-	red        = "\033[31m"
-	path_color = "\033[33m"
-	quoted     = "\033[35m"
-	reset      = "\033[0m"
+	green     = "\033[32m"
+	red       = "\033[31m"
+	pathColor = "\033[33m"
+	quoted    = "\033[35m"
+	reset     = "\033[0m"
 )
 
 // ReplaceCmd represents the replace command
@@ -29,11 +26,11 @@ var ReplaceCmd = &cobra.Command{
 			cmd.Help()
 			return
 		}
-		old_string := args[0]
-		new_string := args[1]
+		oldString := args[0]
+		newString := args[1]
 
 		path, _ := cmd.Flags().GetString("path")
-		ignore_case, _ := cmd.Flags().GetBool("ignore-case")
+		ignoreCase, _ := cmd.Flags().GetBool("ignore-case")
 
 		path, err := util.GetPath(path)
 		if err != nil {
@@ -45,13 +42,13 @@ var ReplaceCmd = &cobra.Command{
 			path = util.GetCurrentDir()
 		}
 
-		count, err := util.UpdateProjectName(path, old_string, new_string, ignore_case)
+		count, err := util.UpdateProjectName(path, oldString, newString, ignoreCase)
 		if err != nil {
 			cmd.Println(err)
 			return
 		}
 
-		fmt.Printf("\nReplaced %v%v%v instances of %v%v%v with %v%v%v\n", green, count, reset, red, old_string, reset, quoted, new_string, reset)
+		fmt.Printf("\nReplaced %v%v%v instances of %v%v%v with %v%v%v\n", green, count, reset, red, oldString, reset, quoted, newString, reset)
 
 	},
 }
