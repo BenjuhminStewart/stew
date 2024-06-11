@@ -1,6 +1,3 @@
-/*
-Copyright © 2024 Benjamin Stewart <benjuhminstewart@gmail.com
-*/
 package add
 
 import (

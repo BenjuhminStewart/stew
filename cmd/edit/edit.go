@@ -1,6 +1,3 @@
-/*
-Copyright © 2024 Benjamin Stewart <benjuhminstewart@gmail.com>
-*/
 package edit
 
 import (
@@ -22,7 +19,7 @@ var EditCmd = &cobra.Command{
 			return
 		}
 
-		selected_stew := args[0]
+		selectedStew := args[0]
 		name, _ := cmd.Flags().GetString("name")
 		description, _ := cmd.Flags().GetString("description")
 		path, _ := cmd.Flags().GetString("path")
@@ -40,7 +37,7 @@ var EditCmd = &cobra.Command{
 			return
 		}
 
-		stew, err := stews.GetByName(selected_stew)
+		stew, err := stews.GetByName(selectedStew)
 		if err != nil {
 			cmd.Println(err)
 			return

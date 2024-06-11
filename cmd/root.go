@@ -1,6 +1,3 @@
-/*
-Copyright © 2024 Benjamin Stewart <benjuhminstewart@gmail.com
-*/
 package cmd
 
 import (
@@ -20,8 +17,12 @@ import (
 	"github.com/BenjuhminStewart/stew/util"
 )
 
-var cfgFile string
-var version string
+var (
+	cfgFile string
+
+	// Version is the version of the stew
+	Version string
+)
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -33,7 +34,7 @@ var rootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		flag, _ := cmd.Flags().GetBool("version")
 		if flag {
-			fmt.Println(version)
+			fmt.Println(Version)
 			os.Exit(0)
 		}
 
@@ -55,7 +56,8 @@ func setDefaults() {
 	viper.SetDefault("timeFormat", "2006-01-02 15:04:05")
 	viper.SetDefault("allowFileCreation", false)
 
-	version = "v1.2.2"
+	// Update the version
+	Version = "v1.2.3"
 }
 
 func addSubCommands() {
