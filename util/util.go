@@ -64,7 +64,7 @@ func GetPath(path string) (string, error) {
 		path = filepath.Join(path, val)
 	}
 
-	if !checkIfDirExists(path) {
+	if !CheckIfDirExists(path) {
 		err := fmt.Sprintf("\n%v%v%v does not exist", red, path, reset)
 		return path, errors.New(err)
 	}
@@ -72,8 +72,8 @@ func GetPath(path string) (string, error) {
 	return path, nil
 }
 
-// checkIfDirExists checks if a directory exists
-func checkIfDirExists(path string) bool {
+// CheckIfDirExists checks if a directory exists
+func CheckIfDirExists(path string) bool {
 	_, err := os.Stat(path)
 	if err == nil {
 		return true

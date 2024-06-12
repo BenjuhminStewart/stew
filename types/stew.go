@@ -14,7 +14,7 @@ const (
 	red         = "\033[31m"
 	property    = "\033[36m"
 	description = "\033[35m"
-	path        = "\033[33m"
+	pathColor   = "\033[33m"
 	reset       = "\033[0m"
 )
 
@@ -38,7 +38,13 @@ func (st Stews) Len() int {
 func (st Stew) Print() {
 	fmt.Printf("\n%vName%v        -> %s\n", property, reset, st.Name)
 	fmt.Printf("%vDescription%v -> '%v%s%v'\n", property, reset, description, st.Description, reset)
-	fmt.Printf("%vPath%v        -> '%v%s%v'\n", property, reset, path, st.Path, reset)
+
+	if util.CheckIfDirExists(st.Path) {
+		fmt.Printf("%vPath%v        -> '%v%s%v'\n", property, reset, pathColor, st.Path, reset)
+	} else {
+		fmt.Printf("%vPath%v        -> '%v%s%v'\n", property, reset, red, st.Path, reset)
+		fmt.Printf("^^^ This stew location has been deleted\nEither edit the path or remove the stew\n")
+	}
 	fmt.Printf("%vCreated At%v  -> %s\n\n", property, reset, util.FormatTime(st.CreatedAt))
 }
 
@@ -47,7 +53,7 @@ func (st Stew) PrintAdded() {
 	fmt.Printf("\n`%v%s%v` has been added to your stews 🎉\n\n", green, st.Name, reset)
 	fmt.Printf(" %vName%v        -> %s\n", property, reset, st.Name)
 	fmt.Printf(" %vDescription%v -> '%v%s%v'\n", property, reset, description, st.Description, reset)
-	fmt.Printf(" %vPath%v        -> '%v%s%v'\n", property, reset, path, st.Path, reset)
+	fmt.Printf(" %vPath%v        -> '%v%s%v'\n", property, reset, pathColor, st.Path, reset)
 	fmt.Printf(" %vCreated At%v  -> %s\n\n", property, reset, util.FormatTime(st.CreatedAt))
 }
 
@@ -167,7 +173,13 @@ func (st *Stews) List() {
 		fmt.Println()
 		fmt.Printf(" %v%v%v [%v%v%v]", green, s.Name, reset, property, i, reset)
 		fmt.Printf(": '%v%s%v'\n", description, s.Description, reset)
-		fmt.Printf(" %v%s%v\n", path, s.Path, reset)
+
+		if util.CheckIfDirExists(s.Path) {
+			fmt.Printf(" %v%s%v\n", pathColor, s.Path, reset)
+		} else {
+			fmt.Printf(" %v%s%v\n", red, s.Path, reset)
+			fmt.Printf(" ^^^ This stew location has been deleted\n Either edit the path or remove the stew\n")
+		}
 		fmt.Printf(" %s\n", util.FormatTime(s.CreatedAt))
 	}
 

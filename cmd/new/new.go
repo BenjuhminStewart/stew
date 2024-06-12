@@ -8,6 +8,14 @@ import (
 	"github.com/spf13/viper"
 )
 
+const (
+	green     = "\033[32m"
+	red       = "\033[31m"
+	pathColor = "\033[33m"
+	quoted    = "\033[35m"
+	reset     = "\033[0m"
+)
+
 // NewCmd represents the init command
 var NewCmd = &cobra.Command{
 	Use:   "new <name_of_stew>",
@@ -33,6 +41,13 @@ var NewCmd = &cobra.Command{
 		stew, err := s.GetByName(name)
 		if err != nil {
 			fmt.Println(err)
+			return
+		}
+
+		if !util.CheckIfDirExists(stew.Path) {
+			fmt.Printf("\n%v%v%v\n", red, stew.Path, reset)
+			fmt.Println("This stew location has been deleted")
+			fmt.Println("Either edit the path or remove the stew")
 			return
 		}
 
