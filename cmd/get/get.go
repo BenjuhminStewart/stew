@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/BenjuhminStewart/stew/types"
+	"github.com/BenjuhminStewart/stew/util"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -30,16 +31,22 @@ var GetCmd = &cobra.Command{
 		}
 
 		stew, err := s.GetByName(name)
+
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
 
 		stew.Print()
+
+		if cmd.Flag("tree").Value.String() == "true" {
+			util.PrintTree(stew.Path)
+		}
 	},
 }
 
 func flags() {
+	GetCmd.Flags().BoolP("tree", "t", false, "Print the tree of the stew")
 }
 
 func init() {
