@@ -3,6 +3,7 @@ package util
 import (
 	"bufio"
 	"errors"
+	"math"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -21,6 +22,8 @@ const (
 	green     = "\033[32m"
 	quoted    = "\033[35m"
 	reset     = "\033[0m"
+	dirColor  = "\033[38;2;190;130;255m"
+	fileColor = "\033[38;2;210;210;210m"
 )
 
 // GetHomeDir returns the home directory
@@ -32,6 +35,49 @@ func GetHomeDir() string {
 	}
 	return homeDir
 
+}
+
+// PrintTree prints the directory tree
+func PrintTree(path string) {
+	root := path
+	var sb strings.Builder
+	filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if info.Name() == ".git" {
+			return filepath.SkipDir
+		}
+
+		distance := distanceBetweenPaths(path, root)
+		for j := 0; j < distance; j++ {
+			sb.WriteString("  ")
+		}
+
+		if info.IsDir() {
+
+			sb.WriteString(dirColor)
+			sb.WriteString(info.Name())
+			sb.WriteString(reset)
+			sb.WriteString("/\n")
+		} else {
+			sb.WriteString(fileColor)
+			sb.WriteString(info.Name())
+			sb.WriteString(reset)
+			sb.WriteString("\n")
+		}
+
+		return nil
+	})
+	fmt.Println(sb.String())
+}
+
+func distanceBetweenPaths(path1, path2 string) int {
+	arr1 := strings.Split(path1, "/")
+	arr2 := strings.Split(path2, "/")
+
+	return int(math.Abs(float64(len(arr1) - len(arr2))))
 }
 
 // GetCurrentDir returns the current directory

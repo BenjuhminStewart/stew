@@ -42,6 +42,7 @@ Usage:
 
 Flags:
   -h, --help          help for get
+  -t, --tree          Print the tree of the stew
 
 Global Flags:
       --config string   config file (default is $HOME/.config/stew/config.yaml)
