@@ -9,11 +9,12 @@ go install github.com/BenjuhminStewart/stew@latest
 
 ## Usage
 - `stew add`: add a new stew template
-- `stew get`: get a stew given a certain id or name
-- `stew list`: list all stew templates
-- `stew new`: create a new instance of a stew template
+- `stew edit`: edit the values of a saved stew 
+- `stew get`: get the values of a saved stew
+- `stew list`: list all saved stew templates
+- `stew new`: create a new instance of a stew template (aka use a stew)
 - `stew remove`: remove a stew template
-- `stew replace`: replace a string in a project
+- `stew replace`: replace all instances of a string in a project
 
 For more information on usage, checkout the [DOC.md](https://github.com/BenjuhminStewart/stew/blob/main/DOC.md) file.
 
