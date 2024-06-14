@@ -2,7 +2,7 @@
 
 ## add
 ```
-Add a new stew
+Add a new stew to saved templates
 
 Usage:
 stew add <name_of_stew> [flags]
@@ -15,7 +15,7 @@ Flags:
 
 ## edit
 ```
-Edit an existing stew
+Edit the values of a saved stew
 
 Usage:
 stew edit <name_of_stew> [flags]
@@ -35,7 +35,7 @@ Global Flags:
 
 ## get
 ```
-Get a stew from a given id or name
+Get values of a saved stew
 
 Usage:
   stew get <name_of_stew> [flags]
@@ -94,7 +94,7 @@ Global Flags:
 
 ## replace
 ```
-Replace a string in a project
+Replace all instances of a string in a project
 
 Usage:
 stew replace <old_string> <new_string> [flags]
