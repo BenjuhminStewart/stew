@@ -64,7 +64,13 @@ func (st Stew) PrintRemoved() {
 
 // Add adds a stew to the slice
 func (st *Stews) Add(name string, description string, path string) {
+	path, _ = util.GetPath(path)
 	if st.doesStewExist(path) {
+		fmt.Printf("\n`%v%s%v` already exists in your stews\n", red, path, reset)
+		return
+	}
+
+	if st.doesStewExistWithName(name) {
 		fmt.Printf("\n`%v%s%v` already exists in your stews\n", red, name, reset)
 		return
 	}
@@ -84,6 +90,15 @@ func (st *Stews) Add(name string, description string, path string) {
 func (st *Stews) doesStewExist(path string) bool {
 	for _, s := range *st {
 		if s.Path == path {
+			return true
+		}
+	}
+	return false
+}
+
+func (st *Stews) doesStewExistWithName(name string) bool {
+	for _, s := range *st {
+		if s.Name == name {
 			return true
 		}
 	}
